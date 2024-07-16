@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import ListTile from "./components/ListTile";
+import ListTile from "./components/ListTile/ListTile";
 import { Utils } from "./utils/utils";
 import { default as config } from './config.json';
 import "./App.css";
@@ -29,7 +29,7 @@ function App() {
     const dupPokes = [...pokesArr];
     const chosenPokes: MinimalPoke[] = [];
     for (let i = 0; i < numberOfPokes; i++) { 
-      const pickedNumber: number = Utils.getRandomInt(0, numberOfPokes);
+      const pickedNumber: number = Utils.getRandomInt(0, pokesArr.length);
       chosenPokes.push(dupPokes[pickedNumber]);
       dupPokes.splice(pickedNumber, 1);
     }
