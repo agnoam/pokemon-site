@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
-import "./App.css";
+
 import ListTile from "./components/ListTile";
+import { Utils } from "./utils/utils";
+import { default as config } from './config.json';
+import "./App.css";
 
 interface Poke {
   imageURL: string;
@@ -13,16 +16,8 @@ interface MinimalPoke {
   url: string;
 }
 
-const NUMBER_OF_TILES: number = 3;
-
 function App() {
   const [pokesToRender, setPokesToRender] = useState<Poke[]>([]);
-
-  const getRandomInt = (min: number, max: number): number => {
-    const minCeiled = Math.ceil(min);
-    const maxFloored = Math.floor(max);
-    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
-  }
 
   const getAllPokes = async () => {
     const url: string = "https://pokeapi.co/api/v2/pokemon?limit=50&offset=0"
@@ -34,7 +29,7 @@ function App() {
     const dupPokes = [...pokesArr];
     const chosenPokes: MinimalPoke[] = [];
     for (let i = 0; i < numberOfPokes; i++) { 
-      const pickedNumber: number = getRandomInt(0, numberOfPokes);
+      const pickedNumber: number = Utils.getRandomInt(0, numberOfPokes);
       chosenPokes.push(dupPokes[pickedNumber]);
       dupPokes.splice(pickedNumber, 1);
     }
@@ -45,11 +40,12 @@ function App() {
 
   const renderList = () => {
     const elementList: any[] = [];
-    for (const poke of pokesToRender) {
-      elementList.push(<ListTile name={poke.name} iconURL={poke.imageURL} color={poke.color}></ListTile>);
-    }
+    pokesToRender.forEach((poke, i) => {
+      elementList.push(
+        <ListTile key={i} name={poke.name} iconURL={poke.imageURL} color={poke.color} />
+      );
+    });
 
-    console.log(elementList);
     return elementList;
   }
 
@@ -58,7 +54,7 @@ function App() {
       const _pokesArr = await getAllPokes();
       let pickedPokes: MinimalPoke[] = [];
       if (_pokesArr)
-        pickedPokes = pickUniquePokes(NUMBER_OF_TILES, _pokesArr);
+        pickedPokes = pickUniquePokes(config.NUMBER_OF_TILES, _pokesArr);
 
       if (pickedPokes) {
         const pokesToRender = [];
@@ -68,7 +64,7 @@ function App() {
           pokesToRender.push({
             imageURL: pokeAsJSON.sprites.front_default,
             name: poke.name,
-            color: 'blue'
+            color: Utils.randomHexColor()
           });
         }
 
@@ -80,11 +76,10 @@ function App() {
   return (
     <>
       <nav>
-        <span>Logo</span>
+        <img src={config.logoURL} alt="logo" />
+        <button className='right-action'>Login</button>
       </nav>
-      <center>
-        { renderList() }
-      </center>
+      { renderList() }
       <footer>footer</footer>
     </>
   );
