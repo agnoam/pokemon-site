@@ -1,14 +1,32 @@
+#root, html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-flow: column;
+}
+
 nav {
-  width: 100%;
+  min-height: 75px;
   height: 75px; 
   background: #1E1E1E;
   color: yellow;
+
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 25px 0px 25px;
+}
+
+.right-action {
+  border: 0;
+  color: yellow;
+  background: transparent;
 }
 
 footer {
-  position: absolute;
   background-color: #1E1E1E;
-  bottom: 0px;
   width: 100%;
   text-align: center;
   color: #17D5FF;

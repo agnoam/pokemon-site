@@ -1,3 +1,5 @@
+import './ListTile.css';
+
 export interface ListTileProps {
     name: string;
     color: string;
@@ -6,8 +8,8 @@ export interface ListTileProps {
 
 const ListTile = (props: ListTileProps) => {
     return (
-        <div>
-            <img src={props.iconURL} style={{width: '160px', height: '160px'}} />
+        <div className='tile' style={{background: props.color}}>
+            <img src={props.iconURL} alt={`${props.name} Icon`} />
             <p>{props.name}</p>
         </div>
     );
